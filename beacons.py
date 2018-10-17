@@ -1,6 +1,6 @@
 from bluetooth.ble import BeaconService
 import triangulate
-
+from time import sleep
 
 class Beacon(object):
     
@@ -20,19 +20,29 @@ class Beacon(object):
         return ret
 
 service = BeaconService()
-devices = service.scan(2)
+strength_history = []
+while True:
+    devices = service.scan(1)
 
 
-strengths = []
-locs = [(0,0), (1,1)]
-for address, data in list(devices.items()):
-    b = Beacon(data, address)
-    print(b)
-    strengths.append(b._rssi)
+    strengths = []
+    locs = [(0,0), (1,0)]
+    for address, data in list(devices.items()):
+    	b = Beacon(data, address)
+    	print(b)
+	print triangulate.strength_to_length(b._rssi)
+    	strengths.append(b._rssi)
+    
+    strength_history.append(strengths)
+    recent = strength_history[-10:]
+    best_strengths = []
+    for i in range(len(strengths)):
+        best_strengths.append(max([el[i] for el in recent]))
+    print ("recents = " + str(recent) + " best: "+ str(best_strengths)) 
 
-
-(x,y) = triangulate.triangulate(locs, strengths)
-print (x,y)
+    loc = triangulate.triangulate(locs, best_strengths)
+    if loc:
+        print (loc)
 
 
 print("Done.")
