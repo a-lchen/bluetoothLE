@@ -20,8 +20,13 @@ class Beacon(object):
 service = BeaconService()
 devices = service.scan(2)
 
+
+strengths = []
+locs = [(0,0), (1,1)]
 for address, data in list(devices.items()):
     b = Beacon(data, address)
     print(b)
+    strengths.append(b._rssi)
+
 
 print("Done.")
