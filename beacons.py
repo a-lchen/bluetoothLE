@@ -1,5 +1,6 @@
 from bluetooth.ble import BeaconService
 import triangulate
+import visualize
 from time import sleep
 
 class Beacon(object):
@@ -21,6 +22,7 @@ class Beacon(object):
 
 service = BeaconService()
 strength_history = []
+visualize.init_pygame()
 while True:
     devices = service.scan(1)
 
@@ -43,6 +45,7 @@ while True:
     loc = triangulate.triangulate(locs, best_strengths)
     if loc:
         print (loc)
+        visualize.visualize(x,y)
 
 
 print("Done.")
