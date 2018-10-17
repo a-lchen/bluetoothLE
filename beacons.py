@@ -1,4 +1,6 @@
 from bluetooth.ble import BeaconService
+import triangulate
+
 
 class Beacon(object):
     
@@ -27,6 +29,10 @@ for address, data in list(devices.items()):
     b = Beacon(data, address)
     print(b)
     strengths.append(b._rssi)
+
+
+(x,y) = triangulate.triangulate(locs, strengths)
+print (x,y)
 
 
 print("Done.")

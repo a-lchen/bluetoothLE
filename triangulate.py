@@ -5,6 +5,8 @@ def triangulate(locs, strengths):
 	print("got location and it's the following:")
 	print (x,y)
 
+	return (x,y)
+
 
 def strength_to_length(x):
 	return 10**((27.55 - (20 * math.log10(2412)) + math.abs(x))/20)
