@@ -23,18 +23,19 @@ class Beacon(object):
 
 
 pygame.init()
-screen = pygame.display.set_mode((400,400))
-pygame.draw.rect(screen, (255,255,255), (25,25,350,350), 0)
+screen = pygame.display.set_mode((850,850))
+pygame.draw.rect(screen, (255,255,255), (25,25,800,800), 0)
 pygame.display.update
 
 def visualize(x,y):
-    pygame.draw.rect(screen, (0,0,0), (x+25,y+25,40,40), 0)
+    pygame.draw.rect(screen, (255,255,255), (25,25,800,800), 0)
+    pygame.draw.rect(screen, (0,0,0), (225, 225, 400, 400), 1)
+    pygame.draw.rect(screen, (0,0,0), ((x*400)+225,(y*400)+225,10,10), 0)
     pygame.display.update
     pygame.display.flip()
 
 service = BeaconService()
 strength_history = []
-visualize.init_pygame()
 while True:
     devices = service.scan(1)
     strengths = []
@@ -44,7 +45,8 @@ while True:
     	print(b)
 	print triangulate.strength_to_length(b._rssi)
     	strengths.append(b._rssi)
-    
+    if (len(strengths) != 2):
+        continue 
     strength_history.append(strengths)
     recent = strength_history[-10:]
     best_strengths = []
@@ -55,7 +57,7 @@ while True:
     loc = triangulate.triangulate(locs, best_strengths)
     if loc:
         print (loc)
-        visualize.visualize(loc[0],loc[1])
+        visualize(loc[0],loc[1])
 
 
 print("Done.")

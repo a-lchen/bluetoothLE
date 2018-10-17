@@ -13,7 +13,7 @@ def triangulate(locs, strengths):
 	    print("got location and it's the following:")
             print (x,y)
 
-            return (x,y)
+            return (x/a,y/a)
 
         except:
             print ("couldn't calculate the location because of bad readings") 
